@@ -2,7 +2,12 @@
 
 // read env vars from .env file
 require('dotenv').config();
-const { Configuration, PlaidApi, Products, PlaidEnvironments} = require('plaid');
+const {
+  Configuration,
+  PlaidApi,
+  Products,
+  PlaidEnvironments,
+} = require('plaid');
 const util = require('util');
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
@@ -18,9 +23,9 @@ const PLAID_ENV = process.env.PLAID_ENV || 'sandbox';
 // PLAID_PRODUCTS is a comma-separated list of products to use when initializing
 // Link. Note that this list must contain 'assets' in order for the app to be
 // able to create and retrieve asset reports.
-const PLAID_PRODUCTS = (process.env.PLAID_PRODUCTS || Products.Transactions).split(
-  ',',
-);
+const PLAID_PRODUCTS = (
+  process.env.PLAID_PRODUCTS || Products.Transactions
+).split(',');
 
 // PLAID_COUNTRY_CODES is a comma-separated list of countries for which users
 // will be able to select institutions from.
@@ -115,7 +120,10 @@ app.post('/api/create_link_token', function (request, response, next) {
       prettyPrintResponse(createTokenResponse);
       response.json(createTokenResponse.data);
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Create a link token with configs which we can then use to initialize Plaid Link client-side
@@ -182,7 +190,10 @@ app.post(
         prettyPrintResponse(createTokenResponse);
         response.json(createTokenResponse.data);
       })
-      .catch(next);
+      .catch((err) => {
+        console.error(err);
+        next();
+      });
   },
 );
 
@@ -209,7 +220,10 @@ app.post('/api/set_access_token', function (request, response, next) {
         error: null,
       });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next(); 
+    });
 });
 
 // Retrieve ACH or ETF Auth data for an Item's accounts
@@ -223,7 +237,10 @@ app.get('/api/auth', function (request, response, next) {
       prettyPrintResponse(authResponse);
       response.json(authResponse.data);
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve Transactions for an Item
@@ -246,7 +263,7 @@ app.get('/api/transactions', function (request, response, next) {
           access_token: ACCESS_TOKEN,
           cursor: cursor,
         };
-        const response = await client.transactionsSync(request)
+        const response = await client.transactionsSync(request);
         const data = response.data;
         // Add this page of results
         added = added.concat(data.added);
@@ -258,12 +275,18 @@ app.get('/api/transactions', function (request, response, next) {
         prettyPrintResponse(response);
       }
 
-      const compareTxnsByDateAscending = (a, b) => (a.date > b.date) - (a.date < b.date);
+      const compareTxnsByDateAscending = (a, b) =>
+        (a.date > b.date) - (a.date < b.date);
       // Return the 8 most recent transactions
-      const recently_added = [...added].sort(compareTxnsByDateAscending).slice(-8);
-      response.json({latest_transactions: recently_added});
+      const recently_added = [...added]
+        .sort(compareTxnsByDateAscending)
+        .slice(-8);
+      response.json({ latest_transactions: recently_added });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve Investment Transactions for an Item
@@ -286,7 +309,10 @@ app.get('/api/investments_transactions', function (request, response, next) {
         investments_transactions: investmentTransactionsResponse.data,
       });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve Identity for an Item
@@ -300,7 +326,10 @@ app.get('/api/identity', function (request, response, next) {
       prettyPrintResponse(identityResponse);
       response.json({ identity: identityResponse.data.accounts });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve real-time Balances for each of an Item's accounts
@@ -314,7 +343,10 @@ app.get('/api/balance', function (request, response, next) {
       prettyPrintResponse(balanceResponse);
       response.json(balanceResponse.data);
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve Holdings for an Item
@@ -328,7 +360,10 @@ app.get('/api/holdings', function (request, response, next) {
       prettyPrintResponse(holdingsResponse);
       response.json({ error: null, holdings: holdingsResponse.data });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve Liabilities for an Item
@@ -342,7 +377,10 @@ app.get('/api/liabilities', function (request, response, next) {
       prettyPrintResponse(liabilitiesResponse);
       response.json({ error: null, liabilities: liabilitiesResponse.data });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve information about an Item
@@ -367,7 +405,10 @@ app.get('/api/item', function (request, response, next) {
         institution: instResponse.data.institution,
       });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Retrieve an Item's accounts
@@ -381,7 +422,10 @@ app.get('/api/accounts', function (request, response, next) {
       prettyPrintResponse(accountsResponse);
       response.json(accountsResponse.data);
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // Create and then retrieve an Asset Report for one or more Items. Note that an
@@ -438,7 +482,10 @@ app.get('/api/assets', function (request, response, next) {
         pdf: pdfResponse.data.toString('base64'),
       });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 app.get('/api/transfer', function (request, response, next) {
@@ -453,7 +500,10 @@ app.get('/api/transfer', function (request, response, next) {
         transfer: transferGetResponse.data.transfer,
       });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 // This functionality is only relevant for the UK/EU Payment Initiation product.
@@ -467,21 +517,30 @@ app.get('/api/payment', function (request, response, next) {
       prettyPrintResponse(paymentGetResponse);
       response.json({ error: null, payment: paymentGetResponse.data });
     })
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      next();
+    });
 });
 
 //TO-DO: This endpoint will be deprecated in the near future
-app.get('/api/income/verification/paystubs', function (request, response, next) {
-  Promise.resolve()
-  .then(async function () {
-    const paystubsGetResponse = await client.incomeVerificationPaystubsGet({
-      access_token: ACCESS_TOKEN
-    });
-    prettyPrintResponse(paystubsGetResponse);
-    response.json({ error: null, paystubs: paystubsGetResponse.data})
-  })
-  .catch(next);
-})
+app.get(
+  '/api/income/verification/paystubs',
+  function (request, response, next) {
+    Promise.resolve()
+      .then(async function () {
+        const paystubsGetResponse = await client.incomeVerificationPaystubsGet({
+          access_token: ACCESS_TOKEN,
+        });
+        prettyPrintResponse(paystubsGetResponse);
+        response.json({ error: null, paystubs: paystubsGetResponse.data });
+      })
+      .catch((err) => {
+        console.error(err);
+        next();
+      });
+  },
+);
 
 app.use('/api', function (error, request, response, next) {
   prettyPrintResponse(error.response);
