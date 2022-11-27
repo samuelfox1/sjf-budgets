@@ -1,0 +1,22 @@
+{
+  "name": "sjf-budgets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "cd server && npm i",
+    "start": " cd server && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelfox1/sjf-budgets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samuelfox1/sjf-budgets/issues"
+  },
+  "homepage": "https://github.com/samuelfox1/sjf-budgets#readme"
+}
