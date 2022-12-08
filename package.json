@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/samuelfox1/sjf-budgets.git"
+    "url": "git+https://github.com/sjfcodes/sjf-budgets.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/samuelfox1/sjf-budgets/issues"
+    "url": "https://github.com/sjfcodes/sjf-budgets/issues"
   },
-  "homepage": "https://github.com/samuelfox1/sjf-budgets#readme"
+  "homepage": "https://github.com/sjfcodes/sjf-budgets#readme"
 }
